@@ -66,6 +66,9 @@ class WordSim:
             print("Model not found. Make sure that the glove model is loaded")
         vectors = []
 
+        args = self.preprocess_words(*args)
+        
+
         for word in args:
             try:
                 if not isinstance(word,str): 
@@ -73,11 +76,7 @@ class WordSim:
                 vectors.append(self.model.get(word,None))
             except ValueError as err:
                 print("Error Converting word to vector: " + repr(err) )
-
-
-
-        vectors = self.preprocess_words(*vectors)
-
+                
         return vectors
                 
     
