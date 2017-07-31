@@ -1,0 +1,2 @@
+from .wordsim import WordSim
+
