@@ -19,9 +19,10 @@ class WordSim:
 
 
 
-    def load_glove_model(self, filename):
+    def load_glove_model(self, filename,verbose=False):
         '''Loads the globe vector embeddings'''
-        print("Loading Glove Model...")
+        if verbose:
+            print("Loading Glove Model...")
         self.model = dict()
         count = 0
         with open(filename, 'r') as f:
@@ -31,7 +32,8 @@ class WordSim:
                 embedding = np.array([float(val) for val in splitline[1:]], dtype=float)
                 self.model[word] = embedding
                 count += 1
-        print("Done loading the model! {count} entries loaded.".format(count=count))
+        if verbose:
+            print("Done loading the model! {count} entries loaded.".format(count=count))
         
     def similarity(self, word1, word2):
         '''returns the cosine similarity of the two words(preprocessed) if they exist in the corpus'''    
@@ -66,7 +68,7 @@ class WordSim:
 
         for word in args:
             try:
-                if isinstance(word,str): 
+                if not isinstance(word,str): 
                     raise ValueError("Only Strings can be converted to vectors")
                 vectors.append(self.model.get(word,None))
             except ValueError as err:
@@ -74,7 +76,7 @@ class WordSim:
 
 
 
-        vectors = tuple(self.preprocess_words(*vectors))
+        vectors = self.preprocess_words(*vectors)
 
         return vectors
                 
